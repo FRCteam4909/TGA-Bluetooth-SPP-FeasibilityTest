@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SPPTest.iml" filepath="$PROJECT_DIR$/SPPTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TGA-FeasibilityTest-Android.iml" filepath="$PROJECT_DIR$/TGA-FeasibilityTest-Android.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
