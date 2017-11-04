@@ -13,6 +13,8 @@ import android.widget.TextView;
 import java.io.OutputStream;
 import java.util.UUID;
 
+import java.lang.reflect.Method;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "BTTEST";
@@ -44,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String connectAddress = etAddress.getText().toString();
+                Log.v("CONNECT", "Attempting Connect - " + connectAddress);
                 connectBluetooth(connectAddress);
-                Log.v("CONNECT", "Clicked Connect - " + connectAddress);
             }
         });
 
@@ -72,18 +74,23 @@ public class MainActivity extends AppCompatActivity {
             Log.v(TAG, e.getMessage());
         }
 
-        try {
-            mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(UUID.fromString("94f39d29-7d6d-437d-973b-fba39e49d4ee"));
+        UUID SERIAL_UUID = UUID.fromString("94f39d29-7d6d-437d-973b-fba39e49d4ee");
 
-            mBluetoothAdapter.cancelDiscovery();
-            mBluetoothSocket.connect();
+        try {
+            mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(SERIAL_UUID);
         } catch (Exception e) {
-            Log.v(TAG, e.getMessage());
+            Log.v("CONNECT","Error creating socket");
+        }
+
+        try {
+            mBluetoothSocket.connect();
+            Log.v("CONNECT","Connected");
+        } catch (Exception e) {
+            Log.v("CONNECT", e.getMessage());
         }
     }
 
     public void updateBytesRead(Integer bytes) {
-
         mTotalBytes += bytes;
         tvBytes.setText(mTotalBytes.toString());
     }

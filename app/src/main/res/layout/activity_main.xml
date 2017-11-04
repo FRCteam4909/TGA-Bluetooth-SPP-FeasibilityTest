@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="44:6D:57:B7:EE:D1"
+        android:text="B8:27:EB:96:B2:FD"
         tools:layout_editor_absoluteX="85dp"
         tools:layout_editor_absoluteY="56dp"
         android:layout_below="@+id/textView"
