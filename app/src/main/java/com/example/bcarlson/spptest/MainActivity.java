@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothSocket mBluetoothSocket;
     private OutputStream mBluetoothOutStream;
 
+
     private ScoutWriter mScoutWriter;
     private ScoutReader mScoutReader;
 
@@ -52,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
             mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(SERIAL_UUID);
 
             mBluetoothSocket.connect();
+
+            byte[] testArray = "[\"Initial Data\"]".getBytes();
+            mBluetoothOutStream = mBluetoothSocket.getOutputStream();
+            mBluetoothOutStream.write(testArray);
+            mBluetoothOutStream.flush();
 
             mScoutWriter = new ScoutWriter(mBluetoothSocket);
             mScoutWriter.start();
