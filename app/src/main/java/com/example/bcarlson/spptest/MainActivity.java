@@ -13,10 +13,7 @@ import android.widget.TextView;
 import java.io.OutputStream;
 import java.util.UUID;
 
-import java.lang.reflect.Method;
-
 public class MainActivity extends AppCompatActivity {
-
     private static final String TAG = "BTTEST";
 
     private BluetoothAdapter mBluetoothAdapter;
@@ -36,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button btConnect = (Button)findViewById(R.id.btConnect);
-        Button btStream = (Button)findViewById(R.id.btStream);
         final TextView etAddress = (TextView)findViewById(R.id.etAddress);
         tvBytes = (TextView)findViewById(R.id.tvBytesRead);
 
@@ -48,18 +44,6 @@ public class MainActivity extends AppCompatActivity {
                 String connectAddress = etAddress.getText().toString();
                 Log.v("CONNECT", "Attempting Connect - " + connectAddress);
                 connectBluetooth(connectAddress);
-            }
-        });
-
-        btStream.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.v("STREAM", "Clicked Stream");
-                mScoutWriter = new ScoutWriter(mBluetoothSocket);
-                mScoutWriter.start();
-
-                mScoutReader = new ScoutReader(mBluetoothSocket, MainActivity.this);
-                mScoutReader.start();
             }
         });
     }
@@ -84,10 +68,19 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             mBluetoothSocket.connect();
+            connected();
             Log.v("CONNECT","Connected");
         } catch (Exception e) {
             Log.v("CONNECT", e.getMessage());
         }
+    }
+
+    public void connected(){
+        mScoutWriter = new ScoutWriter(mBluetoothSocket);
+        mScoutWriter.start();
+
+        mScoutReader = new ScoutReader(mBluetoothSocket, MainActivity.this);
+        mScoutReader.start();
     }
 
     public void updateBytesRead(Integer bytes) {

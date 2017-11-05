@@ -39,7 +39,7 @@ public class ScoutWriter extends Thread {
                 mOutputStream.write(testArray);
                 mOutputStream.flush();
 
-                sleep(100);
+                sleep(1000);
             } catch (Exception e) {
                 Log.v(TAG, e.getMessage());
             }
