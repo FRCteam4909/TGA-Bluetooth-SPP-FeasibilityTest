@@ -26,15 +26,12 @@ public class ScoutWriter extends Thread {
         } catch (Exception e) {
             Log.v(TAG, e.getMessage());
         }
-
     }
 
     public void run() {
-
-        byte[] testArray = "HelloThereHereAreSomeBytes".getBytes();
+        byte[] testArray = "[\"More Data\"]".getBytes();
 
         while(true) {
-
             try {
                 mOutputStream.write(testArray);
                 mOutputStream.flush();
@@ -45,7 +42,5 @@ public class ScoutWriter extends Thread {
             }
 
         }
-
     }
-
 }

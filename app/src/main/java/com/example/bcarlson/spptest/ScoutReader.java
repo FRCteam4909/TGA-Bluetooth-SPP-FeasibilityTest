@@ -34,18 +34,12 @@ public class ScoutReader extends Thread {
 
         byte[] testArray = new byte[255];
 
-
         while(true) {
 
             try {
                 final int bytesRead = mInputStream.read(testArray);
 
-                mMainActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mMainActivity.updateBytesRead(bytesRead);
-                    }
-                });
+                Log.v(TAG, String.valueOf(bytesRead));
 
                 sleep(100);
             } catch (Exception e) {

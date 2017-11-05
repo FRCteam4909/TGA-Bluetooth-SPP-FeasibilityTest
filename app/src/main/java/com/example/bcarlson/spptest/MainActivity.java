@@ -23,9 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ScoutWriter mScoutWriter;
     private ScoutReader mScoutReader;
-    private TextView tvBytes;
-
-    Integer mTotalBytes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,57 +31,35 @@ public class MainActivity extends AppCompatActivity {
 
         Button btConnect = (Button)findViewById(R.id.btConnect);
         final TextView etAddress = (TextView)findViewById(R.id.etAddress);
-        tvBytes = (TextView)findViewById(R.id.tvBytesRead);
-
-        mTotalBytes = 0;
 
         btConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String connectAddress = etAddress.getText().toString();
-                Log.v("CONNECT", "Attempting Connect - " + connectAddress);
                 connectBluetooth(connectAddress);
             }
         });
     }
 
-
     public void connectBluetooth(String mac) {
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
         try {
+            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
             mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(mac);
+
+            UUID SERIAL_UUID = UUID.fromString("94f39d29-7d6d-437d-973b-fba39e49d4ee");
+
+            mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(SERIAL_UUID);
+
+            mBluetoothSocket.connect();
+
+            mScoutWriter = new ScoutWriter(mBluetoothSocket);
+            mScoutWriter.start();
+
+            mScoutReader = new ScoutReader(mBluetoothSocket, MainActivity.this);
+            mScoutReader.start();
         } catch (Exception e) {
             Log.v(TAG, e.getMessage());
         }
-
-        UUID SERIAL_UUID = UUID.fromString("94f39d29-7d6d-437d-973b-fba39e49d4ee");
-
-        try {
-            mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(SERIAL_UUID);
-        } catch (Exception e) {
-            Log.v("CONNECT","Error creating socket");
-        }
-
-        try {
-            mBluetoothSocket.connect();
-            connected();
-            Log.v("CONNECT","Connected");
-        } catch (Exception e) {
-            Log.v("CONNECT", e.getMessage());
-        }
-    }
-
-    public void connected(){
-        mScoutWriter = new ScoutWriter(mBluetoothSocket);
-        mScoutWriter.start();
-
-        mScoutReader = new ScoutReader(mBluetoothSocket, MainActivity.this);
-        mScoutReader.start();
-    }
-
-    public void updateBytesRead(Integer bytes) {
-        mTotalBytes += bytes;
-        tvBytes.setText(mTotalBytes.toString());
     }
 }
